@@ -68,3 +68,15 @@ exports.holdTicket = async (req, res) => {
     return res.status(500).json(err.message)
   }
 }
+exports.rejectTicket = async (req, res) => {
+  const {ticketId} = req.params;
+  try {
+    const rejectTicket = await TicketModel.findByIdAndUpdate(ticketId, { status: 'reject' }, { new: true })
+
+    if(!rejectTicket) return res.status(404).json({ message: "Ticket Not Found"})
+
+    return res.status(200).json({ message: "ticket reject success", ticket: rejectTicket})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}

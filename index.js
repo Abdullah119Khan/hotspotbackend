@@ -7,6 +7,7 @@ const cors = require('cors')
 const userRoutes = require('./routes/user.routes')
 const managerRoutes = require('./routes/manager.routes')
 const ticketRoutes = require('./routes/ticket.routes')
+const commentRoutes = require('./routes/comments.routes')
 
 dotenv.config({ path: './config/config.env' })
 require('./dbConn/dbConn')
@@ -18,6 +19,11 @@ app.use(cookieParser())
 app.use('/api/v1', userRoutes)
 app.use('/api/v1', managerRoutes)
 app.use('/api/v1', ticketRoutes)
+app.use('/api/v1', commentRoutes)
+
+app.get("/", (req, res) => {
+  return res.status(200).send("<h1>Apis Working Successfully</h1>")
+})
 
 const PORT = process.env.PORT;
 

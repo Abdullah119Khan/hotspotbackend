@@ -9,11 +9,13 @@ const ticketSchema = new mongoose.Schema({
   language: { type: String},
   priority: { type: String},
   product: { type: String},
+  email: { type: String},
   status: {
     type: String,
-    enum: ['open', 'close', 'onhold'],
+    enum: ['open', 'close', 'onhold', 'reject'],
     default: 'open'
-  }
+  },
+  comments: [ { body: String, username: String }]
 }, { timestamps: true })
 
 const TicketModel = mongoose.model('Tickets', ticketSchema)
