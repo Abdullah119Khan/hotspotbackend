@@ -42,3 +42,29 @@ exports.updateTicket = async (req, res) => {
     return res.status(500).json(err.message)
   }
 }
+
+exports.closeTicket = async (req, res) => {
+  const {ticketId} = req.params;
+  try {
+    const closeTicket = await TicketModel.findByIdAndUpdate(ticketId, { status: 'close' }, { new: true })
+
+    if(!closeTicket) return res.status(404).json({ message: "Ticket Not Found"})
+
+    return res.status(200).json({ message: "ticket close success", ticket: closeTicket})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}
+
+exports.holdTicket = async (req, res) => {
+  const {ticketId} = req.params;
+  try {
+    const closeTicket = await TicketModel.findByIdAndUpdate(ticketId, { status: 'onhold' }, { new: true })
+
+    if(!closeTicket) return res.status(404).json({ message: "Ticket Not Found"})
+
+    return res.status(200).json({ message: "ticket On Hold success", ticket: closeTicket})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}

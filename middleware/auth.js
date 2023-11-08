@@ -1,25 +1,23 @@
 const jwt = require('jsonwebtoken');
+const UserModel = require('../models/user.model');
 
 const secretKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA53VzmIVVZZWyNm266l82";
 
-const isAuthenticated = (req, res, next) => {
-  const authHeader = req.headers.token;
+const isAuthenticated = async (req, res, next) => {
+  const { token } = req.cookies;
 
-  if (authHeader) {
-    const token = authHeader.split(" ")[1];
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) res.status(403).json("Token is not valid!");
-      req.user = user;
-      next();
-    });
-  } else {
-    return res.status(401).json("You are not authenticated!");
-  }
+  if (!token) {
+    return res.status(401).json("Invalid Token")
+  } 
+
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+
+  req.user = await UserModel.findById(decodedToken.id);
+  next();
 };
 
 const verifyTokenAdmin = (req, res, next) => {
   isAuthenticated(req, res, () => {
-    console.log("User role:", req.user);
     if (req.user.role === 'admin') {
       next();
     } else {

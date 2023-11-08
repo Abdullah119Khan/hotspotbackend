@@ -47,3 +47,27 @@ exports.loginManager = async (req, res) => {
     return res.status(500).json(err.message)
   }
 }
+
+
+exports.updateManager = async (req, res) => {
+  try {
+    if(req.body.password) {
+      req.body.password = bcrypt.hashSync(req.body.password, 12)
+    }
+    const updateUser = await UserModel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+
+    return res.status(200).json({ message: "User Updated Successfully", user: updateUser})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}
+
+exports.deleteManager = async (req, res) => {
+  try {
+    const deleteUser = await UserModel.findByIdAndDelete(req.params.id);
+
+    return res.status(204).json({ message: "User Deleted Successfully", user: deleteUser})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}
