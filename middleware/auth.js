@@ -26,6 +26,16 @@ const verifyTokenAdmin = (req, res, next) => {
   });
 };
 
+const verifyUserAndAdmin = (req, res, next) => {
+  isAuthenticated(req, res, () => {
+    if(req.user.id === req.params.id || req.user.role === 'admin') {
+      next()
+    } else {
+      return res.status(403).json("You are not allowed to do that! Only admin can do this")
+    }
+  })
+}
+
 const verifyApiKey = (req, res, next) => {
   const apiKey = req.header('X-API-Key');
   if (apiKey !== secretKey) {
@@ -34,4 +44,4 @@ const verifyApiKey = (req, res, next) => {
   next();
 };
 
-module.exports = {isAuthenticated, verifyApiKey, verifyTokenAdmin};
+module.exports = {isAuthenticated, verifyApiKey, verifyTokenAdmin, verifyUserAndAdmin};

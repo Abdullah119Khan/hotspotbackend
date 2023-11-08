@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.post('/manager/create', verifyTokenAdmin, createManager)
 router.post('/manager/login', loginManager)
-router.put('/manager/update/:id', updateManager)
-router.delete('/manager/delete/:id', deleteManager)
+router.put('/manager/update/:id', isAuthenticated, updateManager)
+router.delete('/manager/delete/:id', verifyTokenAdmin, deleteManager)
 
 module.exports = router;
