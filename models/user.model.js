@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['admin', 'user', 'manager'],
     default: 'user'
-  }
+  },
+  avatar: { type: String }
 }, { timestamps: true })
 
 const UserModel = mongoose.model('User', userSchema);
