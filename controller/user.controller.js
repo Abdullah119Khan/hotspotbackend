@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 exports.createUser = async (req, res) => {
-  const { firstName, lastName , email, confirmPassword, password, phone } = req.body;
+  const { fullName , email, confirmPassword, password, mobile } = req.body;
   try {
     const user = await UserModel.findOne({ email })
 
@@ -14,10 +14,10 @@ exports.createUser = async (req, res) => {
     const hashPassword = bcrypt.hashSync(req.body.password, 12);
 
     const newUser = new UserModel({
-      fullName: `${firstName} ${lastName}`, 
+      fullName, 
       email, 
       password: hashPassword, 
-      mobile: phone,
+      mobile,
     });
 
     const savedUser = await newUser.save()
@@ -74,6 +74,8 @@ exports.updateUser = async (req, res) => {
     if(req.body.password) {
       req.body.password = bcrypt.hashSync(req.body.password, 12)
     }
+
+    // console.log("Hello", imagePath)
     const updateUser = await UserModel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
 
     return res.status(200).json({ message: "User Updated Successfully", user: updateUser})
@@ -87,6 +89,17 @@ exports.deleteUser = async (req, res) => {
     const deleteUser = await UserModel.findByIdAndDelete(req.params.id);
 
     return res.status(204).json({ message: "User Deleted Successfully", user: deleteUser})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}
+
+exports.getUserById = async (req, res) => {
+  try {
+    const getUser = await UserModel.findById(req.params.id)
+
+    if(!getUser) return res.status(404).json({ message: "User not found with this id"})
+    return res.status(200).json({ user: getUser})
   } catch(err) {
     return res.status(500).json(err.message)
   }

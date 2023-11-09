@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 
 exports.createManager = async (req, res) => {
-  const { firstName, lastName , email, password, confirmPassword, phone } = req.body;
+  const { fullName , email, password, confirmPassword, mobile } = req.body;
   try {
     const manager = await UserModel.findOne({ email })
 
@@ -14,10 +14,10 @@ exports.createManager = async (req, res) => {
     const hashPassword = bcrypt.hashSync(password, 10);
 
     const newManager = new UserModel({
-      fullName: `${firstName} ${lastName}`, 
+      fullName, 
       email, 
       password: hashPassword, 
-      mobile: phone,
+      mobile,
       role: 'manager'
     });
 
@@ -48,6 +48,18 @@ exports.loginManager = async (req, res) => {
   }
 }
 
+exports.getByIdManager = async (req, res) => {
+  try {
+    const getManager = await UserModel.findById(req.params.id)
+
+    if(!getManager) return res.status(404).json({ message: "Manager not found with that ID"});
+
+    return res.status(200).json({ manager: getManager})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}
+
 
 exports.updateManager = async (req, res) => {
   try {
@@ -56,7 +68,7 @@ exports.updateManager = async (req, res) => {
     }
     const updateUser = await UserModel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
 
-    return res.status(200).json({ message: "User Updated Successfully", user: updateUser})
+    return res.status(200).json({ message: "User Updated Successfully", manager: updateUser})
   } catch(err) {
     return res.status(500).json(err.message)
   }

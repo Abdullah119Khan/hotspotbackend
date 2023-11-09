@@ -13,6 +13,7 @@ exports.createTicket = async (req, res) => {
 }
 
 exports.getAllTicket = async (req, res) => {
+  
   try {
     const tickets = await TicketModel.find()
 
@@ -22,6 +23,21 @@ exports.getAllTicket = async (req, res) => {
     return res.status(500).json(err.message)
   }
 }
+exports.getTicketByUsername = async (req, res) => {
+  const { mobileNumber, username } = req.query;
+  try {
+    
+    const tickets = await TicketModel.find({ $or: [{mobileNumber}, {username}] });
+
+    if (tickets.length === 0) {
+      return res.status(404).json({ message: 'No tickets found for the specified mobile number' });
+    }
+
+    return res.status(200).json({ success: true, tickets: tickets });
+  } catch (err) {
+    return res.status(500).json({ message: 'Internal Server Error', error: err.message });
+  }
+};
 
 exports.getSingleTicket = async (req, res) => {
   try {

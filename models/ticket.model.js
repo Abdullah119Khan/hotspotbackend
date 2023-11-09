@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 
 const ticketSchema = new mongoose.Schema({
   mobileNumber: { type: String},
+  username: {type: String},
+  email: {type: String},
   subject: { type: String},
   dueDate: { type: String},
   channel: { type: String},
