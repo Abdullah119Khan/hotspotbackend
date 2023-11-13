@@ -14,8 +14,13 @@ const ticketSchema = new mongoose.Schema({
   email: { type: String},
   status: {
     type: String,
-    enum: ['open', 'close', 'onhold', 'reject'],
+    enum: ['open', 'close', 'onhold', 'reject', 'escalate'],
     default: 'open'
+  },
+  escalationLevel: {
+    type: String,
+    enum: ['user', 'manager', 'admin'],
+    default: 'normal',
   },
   comments: [ { body: String, username: String }]
 }, { timestamps: true })

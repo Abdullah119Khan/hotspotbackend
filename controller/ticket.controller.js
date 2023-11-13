@@ -13,31 +13,20 @@ exports.createTicket = async (req, res) => {
 }
 
 exports.getAllTicket = async (req, res) => {
-  
+  const q = req.query;
+  const filter = {
+    ...(q.mobileNumber && {mobileNumber: q.mobileNumber}),
+    ...(q.username && { username: { $regex: q.username, $options: 'i'}})
+  }
   try {
-    const tickets = await TicketModel.find()
+    const tickets = await TicketModel.find(filter)
 
-    return res.status(200).json({ success: true, tickets: tickets})
+    return res.status(200).json(tickets)
 
   } catch(err) {
     return res.status(500).json(err.message)
   }
 }
-exports.getTicketByUsername = async (req, res) => {
-  const { mobileNumber, username } = req.query;
-  try {
-    
-    const tickets = await TicketModel.find({ $or: [{mobileNumber}, {username}] });
-
-    if (tickets.length === 0) {
-      return res.status(404).json({ message: 'No tickets found for the specified mobile number' });
-    }
-
-    return res.status(200).json({ success: true, tickets: tickets });
-  } catch (err) {
-    return res.status(500).json({ message: 'Internal Server Error', error: err.message });
-  }
-};
 
 exports.getSingleTicket = async (req, res) => {
   try {
@@ -59,6 +48,16 @@ exports.updateTicket = async (req, res) => {
   }
 }
 
+exports.deleteTickets = async (req, res) => {
+  try {
+    const deleteTicket = await TicketModel.findByIdAndDelete(req.params.id);
+
+    return res.status(204).json({ message: "Ticket Delete Successfully", ticket:deleteTicket})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}
+
 exports.closeTicket = async (req, res) => {
   const {ticketId} = req.params;
   try {
@@ -67,6 +66,18 @@ exports.closeTicket = async (req, res) => {
     if(!closeTicket) return res.status(404).json({ message: "Ticket Not Found"})
 
     return res.status(200).json({ message: "ticket close success", ticket: closeTicket})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}
+exports.escalateTicket = async (req, res) => {
+  const {ticketId} = req.params;
+  try {
+    const closeTicket = await TicketModel.findByIdAndUpdate(ticketId, { status: 'escalate' }, { new: true })
+
+    if(!closeTicket) return res.status(404).json({ message: "Ticket Not Found"})
+
+    return res.status(200).json({ message: "ticket escalate success", ticket: closeTicket})
   } catch(err) {
     return res.status(500).json(err.message)
   }

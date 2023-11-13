@@ -48,6 +48,16 @@ exports.loginManager = async (req, res) => {
   }
 }
 
+exports.getAllManager = async (req, res) => {
+  try {
+    const getManager = await UserModel.find({ role: "manager"})
+
+    return res.status(200).json({manager: getManager})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}
+
 exports.getByIdManager = async (req, res) => {
   try {
     const getManager = await UserModel.findById(req.params.id)
@@ -83,3 +93,4 @@ exports.deleteManager = async (req, res) => {
     return res.status(500).json(err.message)
   }
 }
+

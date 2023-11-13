@@ -61,7 +61,7 @@ exports.getUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const getAllUser = await UserModel.find();
+    const getAllUser = await UserModel.find({ role: "user"});
 
     return res.status(200).json({ users: getAllUser })
   } catch(err) {
@@ -96,7 +96,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const getUser = await UserModel.findById(req.params.id)
+    const getUser = await UserModel.findById(req.user.id)
 
     if(!getUser) return res.status(404).json({ message: "User not found with this id"})
     return res.status(200).json({ user: getUser})
@@ -104,3 +104,15 @@ exports.getUserById = async (req, res) => {
     return res.status(500).json(err.message)
   }
 }
+
+exports.logout = async (req, res) => {
+  try {
+    await res.cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true
+    })
+    return res.status(200).json({ message: "Logout successfully"})
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+} 
