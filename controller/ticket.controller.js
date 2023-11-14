@@ -4,9 +4,25 @@ exports.createTicket = async (req, res) => {
   try {
     const newTicket = new TicketModel(req.body)
 
-    const savedTicket = await newTicket.save();
+    await newTicket.save();
 
-    return res.status(201).json({ success: true, ticket: savedTicket})
+    setTimeout(async () => {
+      const ticket = await TicketModel.findById(newTicket._id);
+      if(ticket.status === "open" && ticket.escalationLevel === "user") {
+        ticket.escalationLevel = "manager";
+        await ticket.save();
+
+        setTimeout(async () => {
+          const escalatedTicket = await TicketModel.findById(newTicket._id);
+          if(escalatedTicket.status === "open" && escalatedTicket.escalationLevel === "manager") {
+            escalatedTicket.escalationLevel = "admin";
+            await escalatedTicket.save();
+          }
+        }, 24 * 60 * 60 * 1000)
+      }
+    }, 24 * 60 * 60 * 1000)
+
+    return res.status(201).json({ success: true, ticket:newTicket})
   } catch(err) {
     return res.status(500).json(err.message)
   }

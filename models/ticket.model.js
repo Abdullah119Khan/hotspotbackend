@@ -20,9 +20,17 @@ const ticketSchema = new mongoose.Schema({
   escalationLevel: {
     type: String,
     enum: ['user', 'manager', 'admin'],
-    default: 'normal',
+    default: 'user',
   },
-  comments: [ { body: String, username: String }]
+  comments: [ { body: String, username: String }],
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now()
+  }
 }, { timestamps: true })
 
 const TicketModel = mongoose.model('Tickets', ticketSchema)
