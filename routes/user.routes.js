@@ -4,7 +4,7 @@ const { isAuthenticated, verifyTokenAdmin, verifyUserAndAdmin } = require('../mi
 const upload = require('../utils/multer');
 const router = express.Router()
 
-router.post('/user/create', createUser)
+router.post('/user/create', upload.single("avatar"), createUser)
 router.post('/user/login', loginUser)
 router.get('/user/getuser', isAuthenticated, getUser)
 router.get('/user/getalluser', isAuthenticated, getAllUsers)

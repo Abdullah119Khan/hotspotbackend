@@ -1,4 +1,5 @@
 const TicketModel = require("../models/ticket.model");
+const { emitNewTicket } = require("../utils/socketServer");
 
 exports.createTicket = async (req, res) => {
   try {
@@ -22,6 +23,8 @@ exports.createTicket = async (req, res) => {
       }
     }, 24 * 60 * 60 * 1000)
 
+    emitNewTicket(newTicket)
+
     return res.status(201).json({ success: true, ticket:newTicket})
   } catch(err) {
     return res.status(500).json(err.message)
@@ -39,6 +42,18 @@ exports.getAllTicket = async (req, res) => {
 
     return res.status(200).json(tickets)
 
+  } catch(err) {
+    return res.status(500).json(err.message)
+  }
+}
+
+exports.openTicket = async (req, res) => {
+  
+  try {
+    const openTicket = await TicketModel.find({ status: "open"})
+
+    console.log(openTicket)
+    return res.status(200).json({ ticket: openTicket})
   } catch(err) {
     return res.status(500).json(err.message)
   }

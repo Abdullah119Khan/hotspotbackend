@@ -1,0 +1,21 @@
+{
+  "arabic": {
+    "ماهي شروط طلب المنتجات لدى الوكيل؟": "نفس الشروط السارية للمنتجات والخدمات لدى بنك البلاد",
+    "هل تختلف الشروط أو الأحكام عند الحصول على منتجات البنك من خلال الوكيل؟": "لا يوجد اختلاف",
+    "عند زيارة مقر الوكيل كيف أتأكد من أن الوكيل معتمد من قبل بنك البلاد؟": "من خلال الاطلاع على رخصة الوكالة المصرفية المعتمدة من قبل البنك الموضوعة بشكل بارز بمقر الوكيل",
+    "هل هنالك أي رسوم  إضافية عند طلب خدمة أو منتج من الوكيل لمصرفي؟": "لا توجد رسوم إضافة مقابل تقديم الخدمة عبر الوكيل المصرفي",
+    "هل تختلف المنتجات التي يقدمها الوكيل المصرفي عن المنتجات المقدمة من بنك البلاد؟": " لا، لا يوجد اختلاف.",
+    "هل ستبقى معلوماتي سرية عندما أقوم بإجراء خدمات مصرفية من خلال الوكيل؟": "نعم يلتزم الوكيل والبنك بسرية معلومات العملاء.",
+    "ماهي طرق التواصل مع البنك عند وجود مشكلة أو تقديم شكوى؟": "في حال وجود أي ملاحظة نسعد بتلقي ملاحظتك عبر هاتف البلاد على الرقم 8001230000"
+  },
+  "english": {
+    "hello": "Hello, How are you i am your friend my name is chatbot",
+    "what are the terms for requesting products with the agent?": "The same terms of the products and services of Bank Albilad are applied.",
+    "are the terms and conditions different when acquiring the bank’s products through the agent?": "No difference.",
+    "when visiting the agent's office, how do I make sure that the agent is approved by Bank albilad?": "By reviewing the banking agency license approved by the bank, which is prominently placed at the agent’s office or by visiting Bank Albilad website.",
+    "are there any additional fees when Requesting a service or product from the banking agent?": "There are no additional fees for providing the service through the banking agent",
+    "are the products offered by the banking agent different from those offered by Bank Albilad?": "No difference.",
+    "will my information be kept confidential when I process the banking services through the agent?": "Yes, the agent and the bank are committed to the confidentiality of customer information.",
+    "what are the ways to communicate with the bank when there is a problem or file a complaint?": "If there is any complaint, we are happy to receive it via Albilad toll free 8001230000"
+  }
+}

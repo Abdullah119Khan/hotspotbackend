@@ -13,11 +13,13 @@ exports.createUser = async (req, res) => {
 
     const hashPassword = bcrypt.hashSync(req.body.password, 12);
 
+    const imageUrl = process.env.API + "/public/" + req.file.filename
     const newUser = new UserModel({
       fullName, 
       email, 
       password: hashPassword, 
       mobile,
+      avatar: imageUrl
     });
 
     const savedUser = await newUser.save()
@@ -96,7 +98,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const getUser = await UserModel.findById(req.user.id)
+    const getUser = await UserModel.findById(req.params.id)
 
     if(!getUser) return res.status(404).json({ message: "User not found with this id"})
     return res.status(200).json({ user: getUser})
