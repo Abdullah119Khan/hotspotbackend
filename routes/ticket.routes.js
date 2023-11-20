@@ -1,5 +1,5 @@
 const express = require('express');
-const { createTicket, getAllTicket, updateTicket, getSingleTicket, closeTicket, holdTicket, rejectTicket, getTicketByUsername, escalateTicket, deleteTickets, openTicket } = require('../controller/ticket.controller');
+const { createTicket, getAllTicket, updateTicket, getSingleTicket, closeTicket, holdTicket, rejectTicket, getTicketByUsername, escalateTicket, deleteTickets, openTicket, getAdminTicket } = require('../controller/ticket.controller');
 const { verifyApiKey } = require('../middleware/auth');
 const router = express.Router();
 

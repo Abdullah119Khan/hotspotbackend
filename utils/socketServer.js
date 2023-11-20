@@ -5,10 +5,6 @@ let io;
 const initSocket = (server) => {
   io = socketIO(server);
 
-  io.on('connection', socket => {
-    console.log('A user connected');
-   
-  });
 }
 
 const emitNewTicket = (ticket) => {

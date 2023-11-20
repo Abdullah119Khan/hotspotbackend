@@ -7,23 +7,32 @@ exports.createTicket = async (req, res) => {
 
     await newTicket.save();
 
+    // When someone create ticket they will be immediatly appear on admin dashboard
+    emitNewTicket(newTicket, "Ticket are created and emited")
+
     setTimeout(async () => {
-      const ticket = await TicketModel.findById(newTicket._id);
-      if(ticket.status === "open" && ticket.escalationLevel === "user") {
-        ticket.escalationLevel = "manager";
-        await ticket.save();
+      const managerTicket = await TicketModel.findById(newTicket._id);
+      if(managerTicket.status === "open" && managerTicket.escalationLevel === "user") {
+        managerTicket.escalationLevel = "manager";
+        await managerTicket.save();
 
+        emitNewTicket(managerTicket, "Manager tickets")
         setTimeout(async () => {
-          const escalatedTicket = await TicketModel.findById(newTicket._id);
-          if(escalatedTicket.status === "open" && escalatedTicket.escalationLevel === "manager") {
-            escalatedTicket.escalationLevel = "admin";
-            await escalatedTicket.save();
-          }
-        }, 24 * 60 * 60 * 1000)
-      }
-    }, 24 * 60 * 60 * 1000)
+          const adminTicket = await TicketModel.findById(newTicket._id);
+          if(adminTicket.status === "open" && adminTicket.escalationLevel === "manager") {
+            adminTicket.escalationLevel = "admin";
+            await adminTicket.save();
 
-    emitNewTicket(newTicket)
+            emitNewTicket(adminTicket, "Admin Ticket");
+
+          }
+        }, 1 * 60 * 1000)
+
+      }
+    }, 1 * 60 * 1000)
+    
+
+
 
     return res.status(201).json({ success: true, ticket:newTicket})
   } catch(err) {
